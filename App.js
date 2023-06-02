@@ -9,8 +9,9 @@ export default function App() {
   const ufoLeft = screenWidth / 2
   const [ufoBottom, setUfoBottom] = useState(screenHeight / 2)
   const [obstLeft, setObsLeft] = useState(screenWidth)
-  const [obstLeft2, setObsLeft2] = useState(screenWidth + screenWidth/2)
-
+  const [obstLeft2, setObsLeft2] = useState(screenWidth + screenWidth/2 + 30)
+  const [obstNegHeight, setObstNegHeight] = useState(0)
+  const [obstNegHeight2, setObstNegHeight2] = useState(0)
   const grav = 7
   const gameOver = false
   let obstacleWidth = 60
@@ -46,6 +47,7 @@ export default function App() {
       }
     }else{
       setObsLeft(screenWidth)
+      setObstNegHeight(-Math.random() * 100)
     }
   }, [obstLeft])
   //2 obs
@@ -59,6 +61,7 @@ export default function App() {
       }
     }else{
       setObsLeft2(screenWidth)
+      setObstNegHeight2(-Math.random() * 100)
     }
   }, [obstLeft2])
   return (
@@ -71,14 +74,18 @@ export default function App() {
         <Obstacle
           obstacleWidth={obstacleWidth}
           obstacleHeight={obstacleHeight}
-          obstaclesLeft={obstLeft}
+          randomBottom={obstNegHeight}
           gap={gap}
+          obstaclesLeft={obstLeft}
+          
         />
         <Obstacle
           obstacleWidth={obstacleWidth}
           obstacleHeight={obstacleHeight}
-          obstaclesLeft={obstLeft2}
+          randomBottom={obstNegHeight2}
           gap={gap}
+          obstaclesLeft={obstLeft2}
+          
         />
       </View>
     </TouchableWithoutFeedback>
