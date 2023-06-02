@@ -2,16 +2,16 @@ import React from 'react';
 import { View } from 'react-native';
 
 const Obstacle = ({obstacleWidth,obstacleHeight,gap, obstaclesLeft, randomBottom}) => {
-
+    const n = 5
     return (
         <>
             <View style={{
                 position: 'absolute',
                 backgroundColor: 'blue',
                 width: obstacleWidth,
-                height: 500,
+                height: 600,
                 left: obstaclesLeft,
-                bottom: randomBottom + obstacleHeight + gap,
+                bottom: n*randomBottom + obstacleHeight + gap,
             }}></View>
             <View style={{
                 position: 'absolute',
@@ -19,7 +19,7 @@ const Obstacle = ({obstacleWidth,obstacleHeight,gap, obstaclesLeft, randomBottom
                 width: obstacleWidth,
                 height: obstacleHeight,
                 left: obstaclesLeft,
-                bottom: randomBottom,
+                bottom: n*randomBottom,
             }}></View>
         </>
     )

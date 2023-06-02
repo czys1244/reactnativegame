@@ -15,7 +15,7 @@ export default function App() {
   const grav = 7
   const gameOver = false
   let obstacleWidth = 60
-  let obstacleHeight = 300
+  let obstacleHeight = 600
   let gap = 150
   let timerId
   let obsTimerId
