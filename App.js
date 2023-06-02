@@ -12,11 +12,11 @@ export default function App() {
   const [obstLeft2, setObsLeft2] = useState(screenWidth + screenWidth/2 + 30)
   const [obstNegHeight, setObstNegHeight] = useState(0)
   const [obstNegHeight2, setObstNegHeight2] = useState(0)
-  const grav = 7
+  const grav = 8
   const gameOver = false
   let obstacleWidth = 60
   let obstacleHeight = 600
-  let gap = 150
+  let gap = 200
   let timerId
   let obsTimerId
   let obsTimerId2
@@ -32,7 +32,7 @@ export default function App() {
   }, [ufoBottom])
   const jump = () => {
     if (!gameOver && ufoBottom < screenHeight) {
-      setUfoBottom(ufoBottom => ufoBottom + 50)
+      setUfoBottom(ufoBottom => ufoBottom + 60)
     }
   }
 
@@ -47,7 +47,7 @@ export default function App() {
       }
     }else{
       setObsLeft(screenWidth)
-      setObstNegHeight(-Math.random() * 100)
+      setObstNegHeight(-Math.random() * 400)
     }
   }, [obstLeft])
   //2 obs
@@ -61,9 +61,33 @@ export default function App() {
       }
     }else{
       setObsLeft2(screenWidth)
-      setObstNegHeight2(-Math.random() * 100)
+      setObstNegHeight2(-Math.random() * 400)
     }
   }, [obstLeft2])
+
+  //coll
+  useEffect(() => {
+    if (
+      ((ufoBottom < (obstNegHeight + obstacleHeight + 30) ||
+      ufoBottom > (obstNegHeight + obstacleHeight + gap -30)) &&
+      (obstLeft > screenWidth/2 -30 && obstLeft < screenWidth/2 + 30 )
+      )
+      || 
+      ((ufoBottom < (obstNegHeight2 + obstacleHeight + 30) ||
+      ufoBottom > (obstNegHeight2 + obstacleHeight + gap -30)) &&
+      (obstLeft2 > screenWidth/2 -30 && obstLeft2 < screenWidth/2 + 30 )
+      )
+      ) 
+      {
+      console.log('game over')
+      // stopGame()
+    }
+  })
+  const stopGame = ()=>{
+    clearInterval(timerId)
+    clearInterval(obsTimerId)
+    clearInterval(obsTimerId2)
+  }
   return (
     <TouchableWithoutFeedback onPress={jump}>
       <View style={styles.container}>

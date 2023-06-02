@@ -2,8 +2,8 @@ import React from 'react'
 import { View, Image } from 'react-native'
 
 const Ufo = ({ ufoBottom, ufoLeft }) => {
-    const ufoWidth = 60
-    const ufoHeight = 70
+    const ufoWidth = 70
+    const ufoHeight = 60
 
     return (
         <View style={{
