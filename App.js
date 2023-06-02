@@ -9,13 +9,16 @@ export default function App() {
   const ufoLeft = screenWidth / 2
   const [ufoBottom, setUfoBottom] = useState(screenHeight / 2)
   const [obstLeft, setObsLeft] = useState(screenWidth)
+  const [obstLeft2, setObsLeft2] = useState(screenWidth + screenWidth/2)
+
   const grav = 7
   const gameOver = false
   let obstacleWidth = 60
   let obstacleHeight = 300
-  let gap = 100
+  let gap = 150
   let timerId
   let obsTimerId
+  let obsTimerId2
   useEffect(() => {
     if (ufoBottom > 0) {
       timerId = setInterval(() => {
@@ -27,21 +30,37 @@ export default function App() {
     }
   }, [ufoBottom])
   const jump = () => {
-    if(!gameOver && ufoBottom<screenHeight){
-      setUfoBottom(ufoBottom=>ufoBottom+50)
+    if (!gameOver && ufoBottom < screenHeight) {
+      setUfoBottom(ufoBottom => ufoBottom + 50)
     }
   }
 
-  useEffect(()=>{
-    if(obstLeft>0){
-      obsTimerId=setInterval(()=>{
-        setObsLeft(obstLeft=>obstLeft-5)
-      },30)
+  //1 obs
+  useEffect(() => {
+    if (obstLeft > -obstacleWidth) {
+      obsTimerId = setInterval(() => {
+        setObsLeft(obstLeft => obstLeft - 5)
+      }, 30)
+      return () => {
+        clearInterval(obsTimerId)
+      }
+    }else{
+      setObsLeft(screenWidth)
     }
-    return ()=>{
-      clearInterval(obsTimerId)
+  }, [obstLeft])
+  //2 obs
+  useEffect(() => {
+    if (obstLeft2 > -obstacleWidth) {
+      obsTimerId2 = setInterval(() => {
+        setObsLeft2(obstLeft2 => obstLeft2 - 5)
+      }, 30)
+      return () => {
+        clearInterval(obsTimerId2)
+      }
+    }else{
+      setObsLeft2(screenWidth)
     }
-  },[obstLeft])
+  }, [obstLeft2])
   return (
     <TouchableWithoutFeedback onPress={jump}>
       <View style={styles.container}>
@@ -53,6 +72,12 @@ export default function App() {
           obstacleWidth={obstacleWidth}
           obstacleHeight={obstacleHeight}
           obstaclesLeft={obstLeft}
+          gap={gap}
+        />
+        <Obstacle
+          obstacleWidth={obstacleWidth}
+          obstacleHeight={obstacleHeight}
+          obstaclesLeft={obstLeft2}
           gap={gap}
         />
       </View>
