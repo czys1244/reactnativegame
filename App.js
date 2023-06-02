@@ -17,10 +17,19 @@ export default function App() {
   const [gameOver, setGameOver] = useState(false)
   let obstacleWidth = 60
   let obstacleHeight = 600
-  let gap = 200
+  let gap = 180
   let timerId
   let obsTimerId
   let obsTimerId2
+  const restart = ()=>{
+    setUfoBottom(screenHeight / 2)
+    setObsLeft(screenWidth)
+    setObsLeft2(screenWidth + screenWidth / 2 + 30)
+    setObstNegHeight(0)
+    setObstNegHeight2(0)
+    setScore(0)
+    setGameOver(false)
+  }
   useEffect(() => {
     if (ufoBottom > 0) {
       timerId = setInterval(() => {
@@ -76,7 +85,7 @@ export default function App() {
       ((ufoBottom < (obstNegHeight2 + obstacleHeight + 30) ||
         ufoBottom > (obstNegHeight2 + obstacleHeight + gap - 30)) &&(obstLeft2 > screenWidth / 2 - 30 && obstLeft2 < screenWidth / 2 + 30))
     ) {
-      console.log('game over')
+
       stopGame()
     }
   })
@@ -91,8 +100,9 @@ export default function App() {
       <View style={styles.container}>
         <Text style={{textAlign: 'center', fontSize: 40, color:'white'}}>{score}</Text>
         {gameOver &&<Button
+        style={{color:'yellow'}}
         title="Restart"
-        onPress={() => Alert.alert('Simple Button pressed')}
+        onPress={restart}
       />}
         <Ufo
           ufoBottom={ufoBottom}
@@ -127,4 +137,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  
 });
