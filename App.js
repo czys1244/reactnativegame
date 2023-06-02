@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, Dimensions, TouchableWithoutFeedback } from 'react-native'
+import { StyleSheet, Text, View, Dimensions, TouchableWithoutFeedback, Button } from 'react-native'
 import Ufo from './components/Ufo'
 import Obstacle from './components/Obstacle'
 
@@ -9,11 +9,12 @@ export default function App() {
   const ufoLeft = screenWidth / 2
   const [ufoBottom, setUfoBottom] = useState(screenHeight / 2)
   const [obstLeft, setObsLeft] = useState(screenWidth)
-  const [obstLeft2, setObsLeft2] = useState(screenWidth + screenWidth/2 + 30)
+  const [obstLeft2, setObsLeft2] = useState(screenWidth + screenWidth / 2 + 30)
   const [obstNegHeight, setObstNegHeight] = useState(0)
   const [obstNegHeight2, setObstNegHeight2] = useState(0)
-  const grav = 8
-  const gameOver = false
+  const [score,setScore]=useState(0)
+  const grav = 9
+  const [gameOver, setGameOver] = useState(false)
   let obstacleWidth = 60
   let obstacleHeight = 600
   let gap = 200
@@ -45,9 +46,10 @@ export default function App() {
       return () => {
         clearInterval(obsTimerId)
       }
-    }else{
+    } else {
       setObsLeft(screenWidth)
-      setObstNegHeight(-Math.random() * 400)
+      setObstNegHeight(-Math.random() * 300)
+      setScore(score=>score+1)
     }
   }, [obstLeft])
   //2 obs
@@ -59,38 +61,39 @@ export default function App() {
       return () => {
         clearInterval(obsTimerId2)
       }
-    }else{
+    } else {
       setObsLeft2(screenWidth)
-      setObstNegHeight2(-Math.random() * 400)
+      setObstNegHeight2(-Math.random() * 300)
+      setScore(score=>score+1)
     }
   }, [obstLeft2])
 
   //coll
   useEffect(() => {
     if (
-      ((ufoBottom < (obstNegHeight + obstacleHeight + 30) ||
-      ufoBottom > (obstNegHeight + obstacleHeight + gap -30)) &&
-      (obstLeft > screenWidth/2 -30 && obstLeft < screenWidth/2 + 30 )
-      )
-      || 
+      ((ufoBottom < (obstNegHeight + obstacleHeight + 30) ||ufoBottom > (obstNegHeight + obstacleHeight + gap - 30)) &&
+        (obstLeft > screenWidth / 2 - 30 && obstLeft < screenWidth / 2 + 30))||
       ((ufoBottom < (obstNegHeight2 + obstacleHeight + 30) ||
-      ufoBottom > (obstNegHeight2 + obstacleHeight + gap -30)) &&
-      (obstLeft2 > screenWidth/2 -30 && obstLeft2 < screenWidth/2 + 30 )
-      )
-      ) 
-      {
+        ufoBottom > (obstNegHeight2 + obstacleHeight + gap - 30)) &&(obstLeft2 > screenWidth / 2 - 30 && obstLeft2 < screenWidth / 2 + 30))
+    ) {
       console.log('game over')
-      // stopGame()
+      stopGame()
     }
   })
-  const stopGame = ()=>{
+  const stopGame = () => {
     clearInterval(timerId)
     clearInterval(obsTimerId)
     clearInterval(obsTimerId2)
+    setGameOver(true)
   }
   return (
     <TouchableWithoutFeedback onPress={jump}>
       <View style={styles.container}>
+        <Text style={{textAlign: 'center', fontSize: 40, color:'white'}}>{score}</Text>
+        {gameOver &&<Button
+        title="Restart"
+        onPress={() => Alert.alert('Simple Button pressed')}
+      />}
         <Ufo
           ufoBottom={ufoBottom}
           ufoLeft={ufoLeft}
@@ -101,7 +104,7 @@ export default function App() {
           randomBottom={obstNegHeight}
           gap={gap}
           obstaclesLeft={obstLeft}
-          
+
         />
         <Obstacle
           obstacleWidth={obstacleWidth}
@@ -109,7 +112,7 @@ export default function App() {
           randomBottom={obstNegHeight2}
           gap={gap}
           obstaclesLeft={obstLeft2}
-          
+
         />
       </View>
     </TouchableWithoutFeedback>
